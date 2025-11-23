@@ -1,134 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Umesh Kumar Rai | Data Scientist</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Umesh Kumar Rai | Data Scientist</title>
+
+  <!-- main stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Roboto -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- axios for GitHub fetch -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    <!-- Navbar -->
-    <header>
-        <nav>
-            <div class="logo">Umesh Kumar Rai</div>
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#kaggle">Kaggle</a></li>
-                <li><a href="#dashboards">Dashboards</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><button id="darkModeToggle">🌙</button></li>
-            </ul>
-            <div class="burger">
-                <div class="line1"></div>
-                <div class="line2"></div>
-                <div class="line3"></div>
-            </div>
-        </nav>
-    </header>
+  <!-- NAVBAR -->
+  <header class="site-header">
+    <nav class="nav container">
+      <div class="brand">
+        <a href="#about">Umesh <span class="accent">Kumar</span> Rai</a>
+      </div>
 
-    <!-- About -->
-    <section id="about" class="fade-in">
-        <div class="container">
-            <div class="about-left">
-                <img src="images/IMG_2179.jpg" alt="Profile Picture">
-            </div>
-            <div class="about-right">
-                <h1>Hi, I'm Umesh Kumar Rai</h1>
-                <h3>B.Tech. in Computer Science | Data Scientist</h3>
-                <p>
-                    I specialize in Data Science, Machine Learning, and Analytics. 
-                    I build predictive models, interactive dashboards, and automate data-driven solutions.
-                </p>
-                <div class="contact-links">
-                    <a href="mailto:ukrai.ukr@gmail.com">Email</a>
-                    <a href="https://github.com/umeshrai01" target="_blank">GitHub</a>
-                    <a href="https://www.kaggle.com/umeshkumarrai123" target="_blank">Kaggle</a>
-                    <a href="https://www.linkedin.com/in/umesh-kumar-rai" target="_blank">LinkedIn</a>
-                    <a href="https://umeshrai01.github.io/portfolio/" target="_blank">Portfolio</a>
-                </div>
-            </div>
-        </div>
-    </section>
+      <button id="burger" class="burger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
 
-    <!-- Skills -->
-    <section id="skills" class="fade-in">
-        <h2>Skills</h2>
-        <div class="skills-container">
-            <div class="skill-category">
-                <h3>Programming</h3>
-                <p>Python, R, SQL, C++, Java, JavaScript</p>
-            </div>
-            <div class="skill-category">
-                <h3>Data Science & ML</h3>
-                <p>Machine Learning, Deep Learning, NLP, Data Visualization, Feature Engineering</p>
-            </div>
-            <div class="skill-category">
-                <h3>Tools</h3>
-                <p>Git, Jupyter, VS Code, Tableau, Power BI, Pandas, NumPy, Scikit-Learn</p>
-            </div>
-        </div>
-    </section>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#kaggle">Kaggle</a></li>
+        <li><a href="#dashboards">Dashboards</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button id="darkModeToggle" class="icon-btn" title="Toggle dark mode">🌙</button></li>
+      </ul>
+    </nav>
+  </header>
 
-    <!-- GitHub Projects -->
-    <section id="projects" class="fade-in">
-        <h2>GitHub Projects</h2>
-        <div class="projects-container" id="github-projects">
-            <!-- Projects dynamically loaded -->
-        </div>
-    </section>
+  <!-- ABOUT -->
+  <section id="about" class="section container fade-in">
+    <div class="about-grid">
+      <div class="avatar">
+        <img src="images/IMG_2179.jpg" alt="Umesh Kumar Rai">
+      </div>
+      <div class="bio">
+        <h1>Hi, I'm <span class="accent">Umesh Kumar Rai</span></h1>
+        <h4>B.Tech. in Computer Science — Data Scientist</h4>
+        <p>
+          I build production-ready machine learning models, RAG chatbots, and interactive dashboards.
+          My work focuses on predictive analytics, feature engineering, and clear visual storytelling.
+        </p>
 
-    <!-- Kaggle Projects -->
-    <section id="kaggle" class="fade-in">
-        <h2>Kaggle Projects</h2>
-        <div class="projects-container">
-            <div class="project-item">
-                <h3>House Price Prediction</h3>
-                <p>Prediction of house prices using regression models, feature engineering, and data visualization.</p>
-                <a href="https://www.kaggle.com/umeshkumarrai123/house-price-prediction" target="_blank">Kaggle Link</a>
-            </div>
-            <div class="project-item">
-                <h3>Human Activity Recognition</h3>
-                <p>Classification of human activities using smartphone sensor data (accelerometer & gyroscope).</p>
-                <a href="https://colab.research.google.com/drive/1wffwd21h-JvtUQtP7za5tQC0ryx8ULLn?usp=sharing" target="_blank">Colab Notebook</a>
-            </div>
+        <div class="contact-links">
+          <a href="mailto:ukrai.ukr@gmail.com" class="btn">Email</a>
+          <a href="https://github.com/umeshrai01" target="_blank" class="btn ghost">GitHub</a>
+          <a href="https://www.kaggle.com/umeshkumarrai123" target="_blank" class="btn ghost">Kaggle</a>
+          <a href="https://www.linkedin.com/in/umesh-kumar-rai" target="_blank" class="btn ghost">LinkedIn</a>
         </div>
-    </section>
-
- <!-- Dashboards -->
-<section id="dashboards" class="fade-in">
-    <h2>Dashboards</h2>
-    <div class="dashboard-container">
-        <div class="dashboard-item">
-            <h3>Power BI Dashboard</h3>
-            <img src="dashboards/PowerBI.jpg" alt="Power BI Dashboard" style="width:100%; border-radius:8px;">
-        </div>
-        <div class="dashboard-item">
-            <h3>Tableau Dashboard</h3>
-            <img src="dashboards/Tableau.jpg" alt="Tableau Dashboard" style="width:100%; border-radius:8px;">
-        </div>
+      </div>
     </div>
-</section>
+  </section>
 
+  <!-- PROJECTS (DYNAMIC + ADD FORM) -->
 
-    <!-- Contact -->
-    <section id="contact" class="fade-in">
-        <h2>Contact Me</h2>
-        <form action="mailto:ukrai.ukr@gmail.com" method="POST" enctype="text/plain">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-            <button type="submit">Send</button>
-        </form>
-    </section>
+  <section id="projects" class="section container fade-in">
+    <div class="section-header">
+      <h2>Projects</h2>
+      <div class="project-actions">
+        
+        <!--
+        <button id="refreshProjects" class="btn small">Refresh</button>
+        <button id="openAddProject" class="btn small accent-bg">Add Project</button>
+        -->
+      </div>
+    </div>
 
-    <footer>
-        <p>&copy; 2025 Umesh Kumar Rai | Data Scientist</p>
-    </footer>
+    <div id="projectsList" class="projects-grid">
+      <!-- dynamic project cards injected here -->
+    </div>
 
-    <script src="script.js"></script>
+    <!--
+    <p class="hint">Projects show Kaggle work first, then your saved local projects, then GitHub public repos. Use "Add Project" to add new projects locally (stored in your browser).</p>
+    -->
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="section container fade-in">
+    <h2>Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <h3>Programming</h3>
+        <p>Python · R · SQL · C++ · Java · JavaScript</p>
+        <div class="skill-bars">
+          <div class="bar"><div class="fill" style="width:92%">Python</div></div>
+          <div class="bar"><div class="fill" style="width:78%">SQL</div></div>
+          <div class="bar"><div class="fill" style="width:70%">JavaScript</div></div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <h3>Data Science & ML</h3>
+        <p>Machine Learning · Deep Learning · NLP · Feature Engineering · EDA</p>
+        <div class="skill-bars">
+          <div class="bar"><div class="fill" style="width:88%">ML</div></div>
+          <div class="bar"><div class="fill" style="width:72%">Deep Learning</div></div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <h3>Tools & Dev</h3>
+        <p>Git · Jupyter · VSCode · Pandas · NumPy · Scikit-Learn · Tableau · PowerBI</p>
+        <div class="skill-bars">
+          <div class="bar"><div class="fill" style="width:82%">Pandas</div></div>
+          <div class="bar"><div class="fill" style="width:66%">Tableau</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KAGGLE (static showcase) -->
+  <section id="kaggle" class="section container fade-in">
+    <h2>Kaggle Notebooks</h2>
+    <div id="kaggleGrid" class="projects-grid">
+      <!-- Kaggle projects are injected by script.js -->
+    </div>
+  </section>
+
+  <!-- DASHBOARDS -->
+  <section id="dashboards" class="section container fade-in">
+    <h2>Dashboards</h2>
+    <div class="dash-grid">
+      <div class="dash-card">
+        <h3>Power BI Dashboard</h3>
+        <img src="dashboards/PowerBI.jpg" alt="Power BI dashboard">
+      </div>
+      <div class="dash-card">
+        <h3>Tableau Dashboard</h3>
+        <img src="dashboards/Tableau.jpg" alt="Tableau dashboard">
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section container fade-in">
+    <h2>Contact Me</h2>
+    <form id="contactForm" class="contact-form" action="mailto:ukrai.ukr@gmail.com" method="POST" enctype="text/plain">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit" class="btn large">Send</button>
+    </form>
+  </section>
+
+  <footer class="site-footer">
+    <p>&copy; <span id="year"></span> Umesh Kumar Rai | Data Scientist</p>
+  </footer>
+
+  <!-- PROJECT DETAIL MODAL -->
+  <div id="projectModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <button id="closeModal" class="close-btn" aria-label="Close">×</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  
+
+  <!-- ADD PROJECT PANEL -->
+  <!--
+  <div id="addProjectPanel" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <button id="closeAdd" class="close-btn" aria-label="Close">×</button>
+      <h3>Add Project</h3>
+      <form id="addProjectForm" class="add-project-form">
+        <input type="text" id="pTitle" placeholder="Project Title" required>
+        <input type="text" id="pSubtitle" placeholder="Short subtitle / techs (e.g., Random Forest, Streamlit)">
+        <textarea id="pDesc" placeholder="Project description (short)" rows="4"></textarea>
+        <input type="url" id="pLink" placeholder="Project link (GitHub / Notebook / Demo)">
+        <input type="url" id="pImg" placeholder="Image URL (optional)">
+        <div class="form-actions">
+          <button type="submit" class="btn accent-bg">Save</button>
+          <button type="button" id="cancelAdd" class="btn ghost">Cancel</button>
+        </div>
+      </form>
+      <p class="hint">Projects added here are stored locally in your browser. They are visible only on this device unless you add them to your repo.</p>
+    </div>
+  </div>
+    -->
+  <!-- MAIN JAVASCRIPT -->
+  <script src="script.js"></script>
 </body>
 </html>
