@@ -1,194 +1,689 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Umesh Kumar Rai | Data Scientist</title>
+  <meta name="description" content="Portfolio of Umesh Kumar Rai - Data Scientist specializing in ML, Deep Learning, and Analytics.">
 
-  <!-- main stylesheet -->
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- Roboto -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <!-- axios for GitHub fetch -->
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Axios -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            slate: {
+              850: '#151e2e',
+              900: '#0f172a',
+              950: '#020617',
+            },
+            accent: {
+              400: '#38bdf8', // sky-400
+              500: '#0ea5e9', // sky-500
+              600: '#0284c7', // sky-600
+            }
+          },
+          animation: {
+            'blob': 'blob 7s infinite',
+            'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+          },
+          keyframes: {
+            blob: {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' },
+            },
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .dark ::-webkit-scrollbar-thumb { background: #334155; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* Canvas Background */
+    #canvas-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .dark .glass-nav {
+      background: rgba(15, 23, 42, 0.7);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+    .dark .glass-card {
+      background: rgba(30, 41, 59, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Typewriter Cursor */
+    .cursor::after {
+      content: '|';
+      animation: blink 1s step-start infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+  </style>
 </head>
-<body>
-  <!-- NAVBAR -->
-  <header class="site-header">
-    <nav class="nav container">
-      <div class="brand">
-        <a href="#about">Umesh <span class="accent">Kumar</span> Rai</a>
-      </div>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 relative overflow-x-hidden">
 
-      <button id="burger" class="burger" aria-label="Toggle menu" aria-expanded="false">
-        <span></span><span></span><span></span>
+  <!-- Particle Background -->
+  <canvas id="canvas-bg"></canvas>
+
+  <!-- Navigation -->
+  <header class="fixed w-full top-0 z-50 glass-nav transition-all duration-300">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="#" class="text-xl font-bold tracking-tight group">
+        Umesh <span class="text-accent-500 group-hover:text-accent-400 transition-colors">Kumar</span> Rai
+      </a>
+      
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-8 font-medium text-sm">
+        <a href="#about" class="hover:text-accent-500 transition-colors">About</a>
+        <a href="#skills" class="hover:text-accent-500 transition-colors">Skills</a>
+        <a href="#projects" class="hover:text-accent-500 transition-colors">Projects</a>
+        <a href="#dashboards" class="hover:text-accent-500 transition-colors">Dashboards</a>
+        <a href="#contact" class="hover:text-accent-500 transition-colors">Contact</a>
+        <button id="darkModeToggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors" aria-label="Toggle Dark Mode">
+          <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
+          <i data-lucide="sun" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+      </nav>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-600 dark:text-slate-300">
+        <i data-lucide="menu" class="w-6 h-6"></i>
       </button>
+    </div>
 
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#kaggle">Kaggle</a></li>
-        <li><a href="#dashboards">Dashboards</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><button id="darkModeToggle" class="icon-btn" title="Toggle dark mode">🌙</button></li>
-      </ul>
-    </nav>
+    <!-- Mobile Nav Dropdown -->
+    <div id="mobileMenu" class="hidden md:hidden absolute w-full bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shadow-xl">
+      <div class="flex flex-col px-6 py-4 gap-4">
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#skills" class="mobile-link">Skills</a>
+        <a href="#projects" class="mobile-link">Projects</a>
+        <a href="#dashboards" class="mobile-link">Dashboards</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+      </div>
+    </div>
   </header>
 
-  <!-- ABOUT -->
-  <section id="about" class="section container fade-in">
-    <div class="about-grid">
-      <div class="avatar">
-        <img src="images/IMG_2179.jpg" alt="Umesh Kumar Rai">
-      </div>
-      <div class="bio">
-        <h1>Hi, I'm <span class="accent">Umesh Kumar Rai</span></h1>
-        <h4>B.Tech. in Computer Science — Data Scientist</h4>
-        <p>
-          I build production-ready machine learning models, RAG chatbots, and interactive dashboards.
-          My work focuses on predictive analytics, feature engineering, and clear visual storytelling.
+  <!-- Hero Section -->
+  <section id="about" class="min-h-screen flex items-center justify-center pt-20 relative">
+    <!-- Decorative Gradients -->
+    <div class="absolute top-20 left-10 w-72 h-72 bg-accent-400/20 rounded-full blur-3xl animate-blob"></div>
+    <div class="absolute bottom-20 right-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+
+    <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
+      <div class="order-2 md:order-1 space-y-6 animate-fade-in-up">
+        <div class="inline-flex items-center px-3 py-1 rounded-full bg-accent-500/10 text-accent-600 dark:text-accent-400 text-sm font-medium border border-accent-500/20">
+          <span class="relative flex h-2 w-2 mr-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-accent-500"></span>
+          </span>
+          Available for Hire
+        </div>
+        
+        <h1 class="text-5xl md:text-7xl font-bold leading-tight">
+          Hi, I'm <br>
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-accent-500 to-purple-600">Umesh K. Rai</span>
+        </h1>
+        
+        <div class="text-xl md:text-2xl text-slate-600 dark:text-slate-300 font-light h-16">
+          I build <span id="typewriter" class="font-medium text-slate-900 dark:text-white cursor"></span>
+        </div>
+
+        <p class="text-slate-600 dark:text-slate-400 max-w-lg leading-relaxed">
+          A Data Scientist specialized in turning raw data into actionable insights. 
+          Expertise in predictive modeling, deep learning architectures, and interactive visual storytelling.
         </p>
 
-        <div class="contact-links">
-          <a href="mailto:ukrai.ukr@gmail.com" class="btn">Email</a>
-          <a href="https://github.com/umeshrai01" target="_blank" class="btn ghost">GitHub</a>
-          <a href="https://www.kaggle.com/umeshkumarrai123" target="_blank" class="btn ghost">Kaggle</a>
-          <a href="https://www.linkedin.com/in/umesh-kumar-rai" target="_blank" class="btn ghost">LinkedIn</a>
+        <div class="flex flex-wrap gap-4 pt-4">
+          <a href="#projects" class="px-8 py-3 bg-accent-600 hover:bg-accent-700 text-white rounded-lg font-medium transition-all shadow-lg shadow-accent-500/30 flex items-center gap-2">
+            View Work <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+          <div class="flex gap-3">
+            <a href="https://github.com/umeshrai01" target="_blank" class="p-3 glass-card rounded-lg hover:text-accent-500 transition-colors" aria-label="GitHub">
+              <i data-lucide="github" class="w-5 h-5"></i>
+            </a>
+            <a href="https://www.kaggle.com/umeshkumarrai123" target="_blank" class="p-3 glass-card rounded-lg hover:text-accent-500 transition-colors" aria-label="Kaggle">
+              <span class="font-bold text-sm">K</span>
+            </a>
+            <a href="https://www.linkedin.com/in/umesh-kumar-rai" target="_blank" class="p-3 glass-card rounded-lg hover:text-accent-500 transition-colors" aria-label="LinkedIn">
+              <i data-lucide="linkedin" class="w-5 h-5"></i>
+            </a>
+            <a href="mailto:ukrai.ukr@gmail.com" class="p-3 glass-card rounded-lg hover:text-accent-500 transition-colors" aria-label="Email">
+              <i data-lucide="mail" class="w-5 h-5"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-1 md:order-2 flex justify-center animate-fade-in-up" style="animation-delay: 0.2s">
+        <div class="relative w-64 h-64 md:w-80 md:h-80">
+          <div class="absolute inset-0 bg-gradient-to-tr from-accent-500 to-purple-600 rounded-[2rem] rotate-6 opacity-20"></div>
+          <div class="absolute inset-0 bg-slate-900 rounded-[2rem] rotate-3 border border-white/10 overflow-hidden shadow-2xl">
+             <img src="images/IMG_2179.jpg" alt="Umesh Kumar Rai" class="w-full h-full object-cover opacity-90 hover:scale-105 transition-transform duration-500" onerror="this.src='https://ui-avatars.com/api/?name=Umesh+Rai&background=0ea5e9&color=fff&size=400'">
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PROJECTS (DYNAMIC + ADD FORM) -->
-
-  <section id="projects" class="section container fade-in">
-    <div class="section-header">
-      <h2>Projects</h2>
-      <div class="project-actions">
-        
-        <!--
-        <button id="refreshProjects" class="btn small">Refresh</button>
-        <button id="openAddProject" class="btn small accent-bg">Add Project</button>
-        -->
+  <!-- Skills Section -->
+  <section id="skills" class="py-24 relative">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+        <div>
+          <h2 class="text-3xl font-bold mb-2">Technical Arsenal</h2>
+          <div class="h-1 w-20 bg-accent-500 rounded"></div>
+        </div>
+        <p class="text-slate-500 dark:text-slate-400 mt-4 md:mt-0 max-w-md text-right">
+          My stack for solving complex data problems.
+        </p>
       </div>
-    </div>
 
-    <div id="projectsList" class="projects-grid">
-      <!-- dynamic project cards injected here -->
-    </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="glass-card p-6 rounded-xl hover:-translate-y-1 transition-transform duration-300">
+          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400 mb-4">
+            <i data-lucide="code-2" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Languages & Core</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">Python</span>
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">SQL</span>
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">R</span>
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">C++</span>
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">JavaScript</span>
+          </div>
+          <div class="mt-4 space-y-2">
+            <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-1.5">
+              <div class="bg-blue-500 h-1.5 rounded-full" style="width: 95%"></div>
+            </div>
+            <div class="flex justify-between text-xs text-slate-500">
+              <span>Python Expert</span>
+              <span>95%</span>
+            </div>
+          </div>
+        </div>
 
-    <!--
-    <p class="hint">Projects show Kaggle work first, then your saved local projects, then GitHub public repos. Use "Add Project" to add new projects locally (stored in your browser).</p>
-    -->
-  </section>
+        <!-- Card 2 -->
+        <div class="glass-card p-6 rounded-xl hover:-translate-y-1 transition-transform duration-300">
+          <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center text-purple-600 dark:text-purple-400 mb-4">
+            <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">AI & Machine Learning</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">PyTorch</span>
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">TensorFlow</span>
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">Scikit-Learn</span>
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">NLP</span>
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">Computer Vision</span>
+          </div>
+        </div>
 
-  <!-- SKILLS -->
-  <section id="skills" class="section container fade-in">
-    <h2>Skills</h2>
-    <div class="skills-grid">
-      <div class="skill-card">
-        <h3>Programming</h3>
-        <p>Python · R · SQL · C++ · Java · JavaScript</p>
-        <div class="skill-bars">
-          <div class="bar"><div class="fill" style="width:92%">Python</div></div>
-          <div class="bar"><div class="fill" style="width:78%">SQL</div></div>
-          <div class="bar"><div class="fill" style="width:70%">JavaScript</div></div>
+        <!-- Card 3 -->
+        <div class="glass-card p-6 rounded-xl hover:-translate-y-1 transition-transform duration-300">
+          <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400 mb-4">
+            <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Data Viz & Tools</h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">Tableau</span>
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">PowerBI</span>
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">Pandas</span>
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">Git</span>
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">Jupyter</span>
+          </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="skill-card">
-        <h3>Data Science & ML</h3>
-        <p>Machine Learning · Deep Learning · NLP · Feature Engineering · EDA</p>
-        <div class="skill-bars">
-          <div class="bar"><div class="fill" style="width:88%">ML</div></div>
-          <div class="bar"><div class="fill" style="width:72%">Deep Learning</div></div>
+  <!-- Projects Section -->
+  <section id="projects" class="py-24 bg-slate-50/50 dark:bg-slate-900/50">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
+        <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          A collection of my work in Machine Learning, Kaggle competitions, and Open Source contributions.
+        </p>
+      </div>
+
+      <!-- Filter Tabs (Visual Only for now) -->
+      <div class="flex justify-center gap-4 mb-12 flex-wrap">
+        <button class="px-4 py-2 bg-accent-500 text-white rounded-full text-sm font-medium shadow-lg shadow-accent-500/25">All Projects</button>
+        <button class="px-4 py-2 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full text-sm font-medium transition-colors border border-slate-200 dark:border-slate-700">Kaggle</button>
+        <button class="px-4 py-2 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full text-sm font-medium transition-colors border border-slate-200 dark:border-slate-700">GitHub</button>
+      </div>
+
+      <!-- Grid -->
+      <div id="projectsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Projects injected via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboards Section -->
+  <section id="dashboards" class="py-24">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+        <div>
+          <h2 class="text-3xl font-bold mb-2">Visual Analytics</h2>
+          <div class="h-1 w-20 bg-accent-500 rounded"></div>
+        </div>
+        <p class="text-slate-500 dark:text-slate-400">Interact with data stories.</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Dashboard 1 -->
+        <div class="group relative rounded-xl overflow-hidden shadow-2xl bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <div class="aspect-video bg-slate-800 relative overflow-hidden">
+            <!-- Mockup/Image -->
+            <img src="dashboards/PowerBI.jpg" alt="Power BI" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" onerror="this.src='https://placehold.co/600x400/1e293b/FFF?text=Power+BI+Dashboard'">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
+            <div class="absolute bottom-0 left-0 p-6">
+              <span class="text-xs font-bold text-accent-400 uppercase tracking-wider mb-2 block">Business Intelligence</span>
+              <h3 class="text-2xl font-bold text-white mb-2">Power BI Dashboard</h3>
+              <p class="text-slate-300 text-sm mb-4 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 duration-300">
+                Interactive sales and demographics analysis with dynamic filtering and forecasting.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard 2 -->
+        <div class="group relative rounded-xl overflow-hidden shadow-2xl bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <div class="aspect-video bg-slate-800 relative overflow-hidden">
+            <img src="dashboards/Tableau.jpg" alt="Tableau" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" onerror="this.src='https://placehold.co/600x400/1e293b/FFF?text=Tableau+Dashboard'">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
+            <div class="absolute bottom-0 left-0 p-6">
+              <span class="text-xs font-bold text-accent-400 uppercase tracking-wider mb-2 block">Data Visualization</span>
+              <h3 class="text-2xl font-bold text-white mb-2">Tableau Dashboard</h3>
+              <p class="text-slate-300 text-sm mb-4 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 duration-300">
+                Comprehensive performance metrics dashboard focusing on KPIs and trend analysis.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="skill-card">
-        <h3>Tools & Dev</h3>
-        <p>Git · Jupyter · VSCode · Pandas · NumPy · Scikit-Learn · Tableau · PowerBI</p>
-        <div class="skill-bars">
-          <div class="bar"><div class="fill" style="width:82%">Pandas</div></div>
-          <div class="bar"><div class="fill" style="width:66%">Tableau</div></div>
+  <!-- Contact Section -->
+  <section id="contact" class="py-24 bg-slate-50 dark:bg-slate-900/50">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <div class="glass-card p-8 md:p-12 rounded-2xl shadow-xl text-center">
+        <h2 class="text-3xl font-bold mb-6">Let's Work Together</h2>
+        <p class="text-slate-600 dark:text-slate-300 mb-8 max-w-lg mx-auto">
+          Interested in discussing data science, machine learning, or a potential collaboration? I'm always open to new opportunities.
+        </p>
+
+        <form action="mailto:ukrai.ukr@gmail.com" method="POST" enctype="text/plain" class="space-y-4 max-w-md mx-auto text-left">
+          <div>
+            <label for="name" class="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Name</label>
+            <input type="text" name="name" id="name" required class="w-full px-4 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-accent-500 focus:outline-none transition-all">
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Email</label>
+            <input type="email" name="email" id="email" required class="w-full px-4 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-accent-500 focus:outline-none transition-all">
+          </div>
+          <div>
+            <label for="message" class="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Message</label>
+            <textarea name="message" id="message" rows="4" required class="w-full px-4 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-accent-500 focus:outline-none transition-all"></textarea>
+          </div>
+          <button type="submit" class="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-lg hover:opacity-90 transition-opacity">
+            Send Message
+          </button>
+        </form>
+
+        <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700 flex justify-center gap-6">
+          <a href="https://github.com/umeshrai01" target="_blank" class="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"><i data-lucide="github"></i></a>
+          <a href="https://www.linkedin.com/in/umesh-kumar-rai" target="_blank" class="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"><i data-lucide="linkedin"></i></a>
+          <a href="mailto:ukrai.ukr@gmail.com" class="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"><i data-lucide="mail"></i></a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- KAGGLE (static showcase) -->
-  <section id="kaggle" class="section container fade-in">
-    <h2>Kaggle Notebooks</h2>
-    <div id="kaggleGrid" class="projects-grid">
-      <!-- Kaggle projects are injected by script.js -->
-    </div>
-  </section>
-
-  <!-- DASHBOARDS -->
-  <section id="dashboards" class="section container fade-in">
-    <h2>Dashboards</h2>
-    <div class="dash-grid">
-      <div class="dash-card">
-        <h3>Power BI Dashboard</h3>
-        <img src="dashboards/PowerBI.jpg" alt="Power BI dashboard">
-      </div>
-      <div class="dash-card">
-        <h3>Tableau Dashboard</h3>
-        <img src="dashboards/Tableau.jpg" alt="Tableau dashboard">
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact" class="section container fade-in">
-    <h2>Contact Me</h2>
-    <form id="contactForm" class="contact-form" action="mailto:ukrai.ukr@gmail.com" method="POST" enctype="text/plain">
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
-      <button type="submit" class="btn large">Send</button>
-    </form>
-  </section>
-
-  <footer class="site-footer">
-    <p>&copy; <span id="year"></span> Umesh Kumar Rai | Data Scientist</p>
+  <!-- Footer -->
+  <footer class="py-8 text-center text-slate-500 text-sm">
+    <p>&copy; <span id="year"></span> Umesh Kumar Rai. Built with Tailwind CSS & ❤️.</p>
   </footer>
 
-  <!-- PROJECT DETAIL MODAL -->
-  <div id="projectModal" class="modal" aria-hidden="true">
-    <div class="modal-content">
-      <button id="closeModal" class="close-btn" aria-label="Close">×</button>
-      <div id="modalBody"></div>
+  <!-- Modal Template (Hidden) -->
+  <div id="projectModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl transform scale-95 transition-transform duration-300 p-6 md:p-8 relative border border-slate-200 dark:border-slate-800">
+      <button id="closeModal" class="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <div id="modalBody">
+        <!-- Content injected here -->
+      </div>
     </div>
   </div>
 
-  
+  <script>
+    // --- Icons ---
+    lucide.createIcons();
 
-  <!-- ADD PROJECT PANEL -->
-  <!--
-  <div id="addProjectPanel" class="modal" aria-hidden="true">
-    <div class="modal-content">
-      <button id="closeAdd" class="close-btn" aria-label="Close">×</button>
-      <h3>Add Project</h3>
-      <form id="addProjectForm" class="add-project-form">
-        <input type="text" id="pTitle" placeholder="Project Title" required>
-        <input type="text" id="pSubtitle" placeholder="Short subtitle / techs (e.g., Random Forest, Streamlit)">
-        <textarea id="pDesc" placeholder="Project description (short)" rows="4"></textarea>
-        <input type="url" id="pLink" placeholder="Project link (GitHub / Notebook / Demo)">
-        <input type="url" id="pImg" placeholder="Image URL (optional)">
-        <div class="form-actions">
-          <button type="submit" class="btn accent-bg">Save</button>
-          <button type="button" id="cancelAdd" class="btn ghost">Cancel</button>
-        </div>
-      </form>
-      <p class="hint">Projects added here are stored locally in your browser. They are visible only on this device unless you add them to your repo.</p>
-    </div>
-  </div>
-    -->
-  <!-- MAIN JAVASCRIPT -->
-  <script src="script.js"></script>
+    // --- Dark Mode ---
+    const toggle = document.getElementById('darkModeToggle');
+    const html = document.documentElement;
+    
+    // Check local storage or system preference
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.classList.add('dark');
+    } else {
+      html.classList.remove('dark');
+    }
+
+    toggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
+    });
+
+    // --- Typewriter Effect ---
+    const phrases = ["Machine Learning Models.", "RAG Chatbots.", "Predictive Analytics.", "Visual Stories."];
+    let i = 0;
+    let j = 0;
+    let isDeleting = false;
+    const speed = 100;
+    const deleteSpeed = 50;
+    const pause = 2000;
+    const target = document.getElementById("typewriter");
+
+    function type() {
+      const current = phrases[i % phrases.length];
+      if (isDeleting) {
+        target.textContent = current.substring(0, j - 1);
+        j--;
+        if (j === 0) {
+          isDeleting = false;
+          i++;
+        }
+      } else {
+        target.textContent = current.substring(0, j + 1);
+        j++;
+        if (j === current.length) {
+          isDeleting = true;
+          setTimeout(type, pause);
+          return;
+        }
+      }
+      setTimeout(type, isDeleting ? deleteSpeed : speed);
+    }
+    document.addEventListener("DOMContentLoaded", type);
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+
+    // --- Project Data & Fetching ---
+    const GITHUB_USER = 'umeshrai01';
+    const projectsGrid = document.getElementById('projectsGrid');
+    
+    // Kaggle Data (Preserved from your original script)
+    const KAGGLE_PROJECTS = [
+      {
+        title: "House Price Prediction",
+        tags: ["Regression", "Ensemble"],
+        desc: "Advanced regression techniques with stacking to predict house prices. Top 5% on Kaggle.",
+        link: "https://www.kaggle.com/code/umeshkumarrai123/house-price-prediction",
+        source: "Kaggle"
+      },
+      {
+        title: "Spaceship Titanic",
+        tags: ["Classification", "Gradient Boosting"],
+        desc: "Predicting which passengers are transported to an alternate dimension using XGBoost.",
+        link: "https://www.kaggle.com/code/umeshkumarrai123/spaceship-titanic-project",
+        source: "Kaggle"
+      },
+      {
+        title: "Sentiment Analysis",
+        tags: ["NLP", "LSTM", "Deep Learning"],
+        desc: "Neural network implementation with tokenization and embeddings for text sentiment.",
+        link: "https://www.kaggle.com/code/umeshkumarrai123/sentiment-analysis-with-neural-networks/",
+        source: "Kaggle"
+      },
+      {
+        title: "MNIST Digit Recognition",
+        tags: ["CV", "CNN", "Keras"],
+        desc: "High-accuracy Convolutional Neural Network for handwritten digit classification.",
+        link: "https://www.kaggle.com/code/umeshkumarrai123/mnist-digit-recognition",
+        source: "Kaggle"
+      },
+      {
+        title: "NYC Taxi Duration",
+        tags: ["Geospatial", "Time Series"],
+        desc: "Feature engineering on geospatial data to predict trip durations in NYC.",
+        link: "https://www.kaggle.com/code/umeshkumarrai123/nyc-taxi-trip-duration",
+        source: "Kaggle"
+      },
+      {
+        title: "Titanic Survival",
+        tags: ["Classification", "EDA"],
+        desc: "The classic Titanic dataset analysis and survival prediction for beginners.",
+        link: "https://www.kaggle.com/code/umeshkumarrai123/titanic-classification-project",
+        source: "Kaggle"
+      }
+    ];
+
+    // Card Component
+    function createCard(p) {
+      // Tags HTML
+      const tagsHtml = p.tags ? p.tags.slice(0,3).map(t => 
+        `<span class="text-xs font-medium px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-md text-slate-600 dark:text-slate-300">${t}</span>`
+      ).join('') : '';
+
+      // Icon determination
+      const icon = p.source === 'Kaggle' 
+        ? '<span class="font-bold text-blue-500">K</span>' 
+        : '<i data-lucide="github" class="w-4 h-4 text-slate-700 dark:text-slate-300"></i>';
+
+      const colorClass = p.source === 'Kaggle' ? 'border-l-4 border-blue-500' : 'border-l-4 border-purple-500';
+
+      return `
+        <article class="glass-card flex flex-col p-6 rounded-xl hover:shadow-2xl hover:shadow-accent-500/10 transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 ${colorClass}">
+          <div class="flex justify-between items-start mb-4">
+            <div class="flex gap-2 flex-wrap">
+              ${tagsHtml}
+            </div>
+            <div class="p-2 bg-slate-50 dark:bg-slate-700 rounded-full shadow-sm">
+              ${icon}
+            </div>
+          </div>
+          
+          <h3 class="text-xl font-bold mb-2 group-hover:text-accent-500 transition-colors">${p.title}</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm mb-6 flex-grow leading-relaxed line-clamp-3">
+            ${p.desc || "No description provided."}
+          </p>
+          
+          <div class="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center">
+            <span class="text-xs font-medium text-slate-400 uppercase tracking-wide">${p.source}</span>
+            <a href="${p.link}" target="_blank" class="text-sm font-semibold flex items-center gap-1 text-accent-600 dark:text-accent-400 hover:gap-2 transition-all">
+              View Project <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </article>
+      `;
+    }
+
+    // Render Logic
+    async function loadProjects() {
+      // 1. Render Kaggle immediately
+      KAGGLE_PROJECTS.forEach(p => {
+        projectsGrid.innerHTML += createCard(p);
+      });
+
+      // 2. Fetch GitHub
+      try {
+        const res = await axios.get(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=6&sort=pushed`);
+        const repos = res.data.filter(r => !r.fork).slice(0, 4); // Take top 4 recent
+        
+        repos.forEach(r => {
+          const p = {
+            title: r.name.replace(/-/g, ' ').replace(/_/g, ' '),
+            tags: [r.language || 'Code'],
+            desc: r.description,
+            link: r.html_url,
+            source: 'GitHub'
+          };
+          projectsGrid.innerHTML += createCard(p);
+        });
+        
+        // Refresh icons after injection
+        lucide.createIcons();
+      } catch (err) {
+        console.warn("GitHub fetch error:", err);
+      }
+    }
+
+    loadProjects();
+
+    // --- Modal Logic ---
+    const modal = document.getElementById('projectModal');
+    const modalBody = document.getElementById('modalBody');
+    const closeModal = document.getElementById('closeModal');
+
+    function openModal(content) {
+      modalBody.innerHTML = content;
+      modal.classList.remove('hidden');
+      // Small delay for fade in
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modal.children[0].classList.remove('scale-95');
+        modal.children[0].classList.add('scale-100');
+      }, 10);
+    }
+
+    closeModal.addEventListener('click', () => {
+      modal.classList.add('opacity-0');
+      modal.children[0].classList.add('scale-95');
+      setTimeout(() => modal.classList.add('hidden'), 300);
+    });
+
+    // Mobile Menu
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // --- Canvas Particle Background (Data Science Network) ---
+    const canvas = document.getElementById('canvas-bg');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    function initCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      createParticles();
+    }
+
+    function createParticles() {
+      particles = [];
+      const count = window.innerWidth < 768 ? 40 : 80;
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          size: Math.random() * 2 + 1
+        });
+      }
+    }
+
+    function animateCanvas() {
+      ctx.clearRect(0, 0, width, height);
+      
+      const isDark = document.documentElement.classList.contains('dark');
+      ctx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(15, 23, 42, 0.5)';
+      ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(15, 23, 42, 0.05)';
+
+      for (let i = 0; i < particles.length; i++) {
+        let p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Bounce
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+
+        // Draw dot
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Connect
+        for (let j = i + 1; j < particles.length; j++) {
+          let p2 = particles[j];
+          let dx = p.x - p2.x;
+          let dy = p.y - p2.y;
+          let dist = Math.sqrt(dx*dx + dy*dy);
+          
+          if (dist < 150) {
+            ctx.beginPath();
+            ctx.lineWidth = 1 - dist/150;
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animateCanvas);
+    }
+
+    window.addEventListener('resize', initCanvas);
+    initCanvas();
+    animateCanvas();
+  </script>
 </body>
 </html>
