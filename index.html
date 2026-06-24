@@ -1,689 +1,881 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Umesh Kumar Rai | Data Scientist</title>
-  <meta name="description" content="Portfolio of Umesh Kumar Rai - Data Scientist specializing in ML, Deep Learning, and Analytics.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Umesh Kumar Rai | AI Engineer & Data Scientist</title>
+  <meta name="description" content="Portfolio of Umesh Kumar Rai — AI/ML Engineer, Data Scientist, and Full-Stack Developer specializing in GenAI, LLMs, and production ML systems." />
+  <meta name="keywords" content="AI Engineer, Data Scientist, Machine Learning, GenAI, LLMs, Portfolio" />
+  <meta name="author" content="Umesh Kumar Rai" />
+  <meta name="theme-color" content="#0a0a1a" />
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-  
-  <!-- Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- Axios -->
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind Config -->
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Outfit', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          },
-          colors: {
-            slate: {
-              850: '#151e2e',
-              900: '#0f172a',
-              950: '#020617',
-            },
-            accent: {
-              400: '#38bdf8', // sky-400
-              500: '#0ea5e9', // sky-500
-              600: '#0284c7', // sky-600
-            }
-          },
-          animation: {
-            'blob': 'blob 7s infinite',
-            'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
-          },
-          keyframes: {
-            blob: {
-              '0%': { transform: 'translate(0px, 0px) scale(1)' },
-              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-              '100%': { transform: 'translate(0px, 0px) scale(1)' },
-            },
-            fadeInUp: {
-              '0%': { opacity: '0', transform: 'translateY(20px)' },
-              '100%': { opacity: '1', transform: 'translateY(0)' },
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css" />
 
-  <style>
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    .dark ::-webkit-scrollbar-thumb { background: #334155; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 
-    /* Canvas Background */
-    #canvas-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      opacity: 0.6;
-      pointer-events: none;
-    }
-    
-    .glass-nav {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-    }
-    .dark .glass-nav {
-      background: rgba(15, 23, 42, 0.7);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .glass-card {
-      background: rgba(255, 255, 255, 0.6);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.5);
-    }
-    .dark .glass-card {
-      background: rgba(30, 41, 59, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    /* Typewriter Cursor */
-    .cursor::after {
-      content: '|';
-      animation: blink 1s step-start infinite;
-    }
-    @keyframes blink { 50% { opacity: 0; } }
-  </style>
+  <!-- GSAP + Plugins -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js" defer></script>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300 relative overflow-x-hidden">
+<body>
+  <!-- ========== CUSTOM CURSOR ========== -->
+  <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" class="cursor-ring" aria-hidden="true"></div>
 
-  <!-- Particle Background -->
-  <canvas id="canvas-bg"></canvas>
-
-  <!-- Navigation -->
-  <header class="fixed w-full top-0 z-50 glass-nav transition-all duration-300">
-    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="#" class="text-xl font-bold tracking-tight group">
-        Umesh <span class="text-accent-500 group-hover:text-accent-400 transition-colors">Kumar</span> Rai
-      </a>
-      
-      <!-- Desktop Nav -->
-      <nav class="hidden md:flex items-center gap-8 font-medium text-sm">
-        <a href="#about" class="hover:text-accent-500 transition-colors">About</a>
-        <a href="#skills" class="hover:text-accent-500 transition-colors">Skills</a>
-        <a href="#projects" class="hover:text-accent-500 transition-colors">Projects</a>
-        <a href="#dashboards" class="hover:text-accent-500 transition-colors">Dashboards</a>
-        <a href="#contact" class="hover:text-accent-500 transition-colors">Contact</a>
-        <button id="darkModeToggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors" aria-label="Toggle Dark Mode">
-          <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
-          <i data-lucide="sun" class="w-5 h-5 block dark:hidden"></i>
-        </button>
-      </nav>
-
-      <!-- Mobile Menu Button -->
-      <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-600 dark:text-slate-300">
-        <i data-lucide="menu" class="w-6 h-6"></i>
-      </button>
-    </div>
-
-    <!-- Mobile Nav Dropdown -->
-    <div id="mobileMenu" class="hidden md:hidden absolute w-full bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shadow-xl">
-      <div class="flex flex-col px-6 py-4 gap-4">
-        <a href="#about" class="mobile-link">About</a>
-        <a href="#skills" class="mobile-link">Skills</a>
-        <a href="#projects" class="mobile-link">Projects</a>
-        <a href="#dashboards" class="mobile-link">Dashboards</a>
-        <a href="#contact" class="mobile-link">Contact</a>
+  <!-- ========== LOADER ========== -->
+  <div id="page-loader" class="page-loader" aria-label="Loading">
+    <div class="loader-content">
+      <div class="loader-logo">
+        <span class="loader-letter" data-index="0">U</span>
+        <span class="loader-letter" data-index="1">K</span>
+        <span class="loader-letter" data-index="2">R</span>
       </div>
+      <div class="loader-bar">
+        <div class="loader-bar-fill" id="loader-bar-fill"></div>
+      </div>
+      <p class="loader-text">Initializing Experience...</p>
     </div>
+  </div>
+
+  <!-- ========== THREE.JS CANVAS ========== -->
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+  <!-- ========== NAVIGATION ========== -->
+  <header id="main-nav" class="main-nav" role="banner">
+    <nav class="nav-container" aria-label="Main Navigation">
+      <a href="#hero" class="nav-logo" id="nav-logo">
+        <span class="logo-text">UKR</span>
+        <span class="logo-dot"></span>
+      </a>
+
+      <ul class="nav-links" id="nav-links" role="menubar">
+        <li role="none"><a href="#about" role="menuitem" class="nav-link" data-section="about">About</a></li>
+        <li role="none"><a href="#skills" role="menuitem" class="nav-link" data-section="skills">Skills</a></li>
+        <li role="none"><a href="#projects" role="menuitem" class="nav-link" data-section="projects">Projects</a></li>
+        <li role="none"><a href="#experience" role="menuitem" class="nav-link" data-section="experience">Experience</a></li>
+        <li role="none"><a href="#achievements" role="menuitem" class="nav-link" data-section="achievements">Achievements</a></li>
+        <li role="none"><a href="#contact" role="menuitem" class="nav-link" data-section="contact">Contact</a></li>
+      </ul>
+
+      <button id="nav-toggle" class="nav-toggle" aria-label="Toggle Navigation" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </nav>
   </header>
 
-  <!-- Hero Section -->
-  <section id="about" class="min-h-screen flex items-center justify-center pt-20 relative">
-    <!-- Decorative Gradients -->
-    <div class="absolute top-20 left-10 w-72 h-72 bg-accent-400/20 rounded-full blur-3xl animate-blob"></div>
-    <div class="absolute bottom-20 right-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+  <!-- ========== MOBILE NAV OVERLAY ========== -->
+  <div id="mobile-nav" class="mobile-nav" aria-hidden="true">
+    <ul class="mobile-nav-links">
+      <li><a href="#about" class="mobile-nav-link">About</a></li>
+      <li><a href="#skills" class="mobile-nav-link">Skills</a></li>
+      <li><a href="#projects" class="mobile-nav-link">Projects</a></li>
+      <li><a href="#experience" class="mobile-nav-link">Experience</a></li>
+      <li><a href="#achievements" class="mobile-nav-link">Achievements</a></li>
+      <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
+    </ul>
+  </div>
 
-    <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
-      <div class="order-2 md:order-1 space-y-6 animate-fade-in-up">
-        <div class="inline-flex items-center px-3 py-1 rounded-full bg-accent-500/10 text-accent-600 dark:text-accent-400 text-sm font-medium border border-accent-500/20">
-          <span class="relative flex h-2 w-2 mr-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-accent-500"></span>
+  <main>
+    <!-- ========== SECTION 1: HERO ========== -->
+    <section id="hero" class="hero-section">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span class="badge-text">Available for opportunities</span>
+        </div>
+
+        <h1 class="hero-title" id="hero-title">
+          <span class="title-line">
+            <span class="title-word" data-delay="0">Hi,</span>
+            <span class="title-word" data-delay="1">I'm</span>
           </span>
-          Available for Hire
-        </div>
-        
-        <h1 class="text-5xl md:text-7xl font-bold leading-tight">
-          Hi, I'm <br>
-          <span class="bg-clip-text text-transparent bg-gradient-to-r from-accent-500 to-purple-600">Umesh K. Rai</span>
+          <span class="title-line title-name">
+            <span class="title-word accent-gradient" data-delay="2">Umesh</span>
+            <span class="title-word accent-gradient" data-delay="3">Kumar</span>
+            <span class="title-word accent-gradient" data-delay="4">Rai</span>
+          </span>
         </h1>
-        
-        <div class="text-xl md:text-2xl text-slate-600 dark:text-slate-300 font-light h-16">
-          I build <span id="typewriter" class="font-medium text-slate-900 dark:text-white cursor"></span>
+
+        <div class="hero-typing" id="hero-typing">
+          <span class="typing-prefix">I build </span>
+          <span class="typing-text" id="typing-text"></span>
+          <span class="typing-cursor">|</span>
         </div>
 
-        <p class="text-slate-600 dark:text-slate-400 max-w-lg leading-relaxed">
-          A Data Scientist specialized in turning raw data into actionable insights. 
-          Expertise in predictive modeling, deep learning architectures, and interactive visual storytelling.
+        <p class="hero-description">
+          AI/ML Engineer & Data Scientist crafting production-ready intelligent systems,
+          from predictive models to GenAI-powered applications.
         </p>
 
-        <div class="flex flex-wrap gap-4 pt-4">
-          <a href="#projects" class="px-8 py-3 bg-accent-600 hover:bg-accent-700 text-white rounded-lg font-medium transition-all shadow-lg shadow-accent-500/30 flex items-center gap-2">
-            View Work <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        <div class="hero-cta">
+          <a href="#projects" class="btn-primary magnetic" id="cta-projects">
+            <span class="btn-text">View My Work</span>
+            <span class="btn-icon">→</span>
           </a>
-          <div class="flex gap-3">
-            <a href="https://github.com/umeshrai01" target="_blank" class="p-3 glass-card rounded-lg hover:text-accent-500 transition-colors" aria-label="GitHub">
-              <i data-lucide="github" class="w-5 h-5"></i>
-            </a>
-            <a href="https://www.kaggle.com/umeshkumarrai123" target="_blank" class="p-3 glass-card rounded-lg hover:text-accent-500 transition-colors" aria-label="Kaggle">
-              <span class="font-bold text-sm">K</span>
-            </a>
-            <a href="https://www.linkedin.com/in/umesh-kumar-rai" target="_blank" class="p-3 glass-card rounded-lg hover:text-accent-500 transition-colors" aria-label="LinkedIn">
-              <i data-lucide="linkedin" class="w-5 h-5"></i>
-            </a>
-            <a href="mailto:ukrai.ukr@gmail.com" class="p-3 glass-card rounded-lg hover:text-accent-500 transition-colors" aria-label="Email">
-              <i data-lucide="mail" class="w-5 h-5"></i>
-            </a>
+          <a href="#contact" class="btn-secondary magnetic" id="cta-contact">
+            <span class="btn-text">Get In Touch</span>
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number" data-target="15">0</span>
+            <span class="stat-suffix">+</span>
+            <span class="stat-label">Projects</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="10">0</span>
+            <span class="stat-suffix">+</span>
+            <span class="stat-label">Skills</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="5">0</span>
+            <span class="stat-suffix">+</span>
+            <span class="stat-label">Certifications</span>
           </div>
         </div>
       </div>
 
-      <div class="order-1 md:order-2 flex justify-center animate-fade-in-up" style="animation-delay: 0.2s">
-        <div class="relative w-64 h-64 md:w-80 md:h-80">
-          <div class="absolute inset-0 bg-gradient-to-tr from-accent-500 to-purple-600 rounded-[2rem] rotate-6 opacity-20"></div>
-          <div class="absolute inset-0 bg-slate-900 rounded-[2rem] rotate-3 border border-white/10 overflow-hidden shadow-2xl">
-             <img src="images/IMG_2179.jpg" alt="Umesh Kumar Rai" class="w-full h-full object-cover opacity-90 hover:scale-105 transition-transform duration-500" onerror="this.src='https://ui-avatars.com/api/?name=Umesh+Rai&background=0ea5e9&color=fff&size=400'">
-          </div>
+      <div class="scroll-indicator" id="scroll-indicator">
+        <div class="scroll-mouse">
+          <div class="scroll-wheel"></div>
         </div>
+        <span class="scroll-text">Scroll to explore</span>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Skills Section -->
-  <section id="skills" class="py-24 relative">
-    <div class="container mx-auto px-6">
-      <div class="flex flex-col md:flex-row justify-between items-end mb-12">
-        <div>
-          <h2 class="text-3xl font-bold mb-2">Technical Arsenal</h2>
-          <div class="h-1 w-20 bg-accent-500 rounded"></div>
+    <!-- ========== SECTION 2: ABOUT ========== -->
+    <section id="about" class="section about-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">01</span>
+          <h2 class="section-title reveal-text">About Me</h2>
+          <div class="section-line"></div>
         </div>
-        <p class="text-slate-500 dark:text-slate-400 mt-4 md:mt-0 max-w-md text-right">
-          My stack for solving complex data problems.
-        </p>
-      </div>
 
-      <div class="grid md:grid-cols-3 gap-6">
-        <!-- Card 1 -->
-        <div class="glass-card p-6 rounded-xl hover:-translate-y-1 transition-transform duration-300">
-          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400 mb-4">
-            <i data-lucide="code-2" class="w-6 h-6"></i>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Languages & Core</h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">Python</span>
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">SQL</span>
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">R</span>
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">C++</span>
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">JavaScript</span>
-          </div>
-          <div class="mt-4 space-y-2">
-            <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-1.5">
-              <div class="bg-blue-500 h-1.5 rounded-full" style="width: 95%"></div>
+        <div class="about-grid">
+          <div class="about-image-wrapper reveal-element">
+            <div class="about-image-card">
+              <div class="image-glow"></div>
+              <img src="images/IMG_2179.jpg" alt="Umesh Kumar Rai — AI Engineer" class="about-image" loading="lazy" />
+              <div class="image-border"></div>
             </div>
-            <div class="flex justify-between text-xs text-slate-500">
-              <span>Python Expert</span>
-              <span>95%</span>
+            <div class="about-float-card float-card-1">
+              <span class="float-icon">🧠</span>
+              <span class="float-label">AI/ML Expert</span>
+            </div>
+            <div class="about-float-card float-card-2">
+              <span class="float-icon">🚀</span>
+              <span class="float-label">Full-Stack Dev</span>
             </div>
           </div>
-        </div>
 
-        <!-- Card 2 -->
-        <div class="glass-card p-6 rounded-xl hover:-translate-y-1 transition-transform duration-300">
-          <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center text-purple-600 dark:text-purple-400 mb-4">
-            <i data-lucide="brain-circuit" class="w-6 h-6"></i>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">AI & Machine Learning</h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">PyTorch</span>
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">TensorFlow</span>
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">Scikit-Learn</span>
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">NLP</span>
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">Computer Vision</span>
-          </div>
-        </div>
+          <div class="about-content reveal-element">
+            <h3 class="about-heading">
+              Transforming data into <span class="accent-gradient">intelligent solutions</span>
+            </h3>
+            <p class="about-text">
+              I'm a passionate AI/ML Engineer and Data Scientist with expertise in building
+              production-ready machine learning systems, RAG-powered chatbots, and interactive
+              analytics dashboards. My work spans predictive modeling, NLP, computer vision,
+              and GenAI applications.
+            </p>
+            <p class="about-text">
+              Currently pursuing B.Tech in Computer Science while simultaneously earning a
+              BS degree from IIT Madras in Data Science, I combine strong academic foundations
+              with hands-on engineering experience to deliver impactful solutions.
+            </p>
 
-        <!-- Card 3 -->
-        <div class="glass-card p-6 rounded-xl hover:-translate-y-1 transition-transform duration-300">
-          <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400 mb-4">
-            <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
-          </div>
-          <h3 class="text-xl font-semibold mb-3">Data Viz & Tools</h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">Tableau</span>
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">PowerBI</span>
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">Pandas</span>
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">Git</span>
-            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-sm font-medium">Jupyter</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects Section -->
-  <section id="projects" class="py-24 bg-slate-50/50 dark:bg-slate-900/50">
-    <div class="container mx-auto px-6">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
-        <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          A collection of my work in Machine Learning, Kaggle competitions, and Open Source contributions.
-        </p>
-      </div>
-
-      <!-- Filter Tabs (Visual Only for now) -->
-      <div class="flex justify-center gap-4 mb-12 flex-wrap">
-        <button class="px-4 py-2 bg-accent-500 text-white rounded-full text-sm font-medium shadow-lg shadow-accent-500/25">All Projects</button>
-        <button class="px-4 py-2 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full text-sm font-medium transition-colors border border-slate-200 dark:border-slate-700">Kaggle</button>
-        <button class="px-4 py-2 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full text-sm font-medium transition-colors border border-slate-200 dark:border-slate-700">GitHub</button>
-      </div>
-
-      <!-- Grid -->
-      <div id="projectsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Projects injected via JS -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Dashboards Section -->
-  <section id="dashboards" class="py-24">
-    <div class="container mx-auto px-6">
-      <div class="flex flex-col md:flex-row justify-between items-end mb-12">
-        <div>
-          <h2 class="text-3xl font-bold mb-2">Visual Analytics</h2>
-          <div class="h-1 w-20 bg-accent-500 rounded"></div>
-        </div>
-        <p class="text-slate-500 dark:text-slate-400">Interact with data stories.</p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-8">
-        <!-- Dashboard 1 -->
-        <div class="group relative rounded-xl overflow-hidden shadow-2xl bg-slate-900 border border-slate-200 dark:border-slate-800">
-          <div class="aspect-video bg-slate-800 relative overflow-hidden">
-            <!-- Mockup/Image -->
-            <img src="dashboards/PowerBI.jpg" alt="Power BI" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" onerror="this.src='https://placehold.co/600x400/1e293b/FFF?text=Power+BI+Dashboard'">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
-            <div class="absolute bottom-0 left-0 p-6">
-              <span class="text-xs font-bold text-accent-400 uppercase tracking-wider mb-2 block">Business Intelligence</span>
-              <h3 class="text-2xl font-bold text-white mb-2">Power BI Dashboard</h3>
-              <p class="text-slate-300 text-sm mb-4 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 duration-300">
-                Interactive sales and demographics analysis with dynamic filtering and forecasting.
-              </p>
+            <div class="about-details">
+              <div class="detail-item">
+                <span class="detail-icon">📍</span>
+                <span class="detail-text">India</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-icon">🎓</span>
+                <span class="detail-text">B.Tech CS & IIT Madras BS</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-icon">💼</span>
+                <span class="detail-text">Open to Opportunities</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-icon">⚡</span>
+                <span class="detail-text">AI / ML / GenAI</span>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Dashboard 2 -->
-        <div class="group relative rounded-xl overflow-hidden shadow-2xl bg-slate-900 border border-slate-200 dark:border-slate-800">
-          <div class="aspect-video bg-slate-800 relative overflow-hidden">
-            <img src="dashboards/Tableau.jpg" alt="Tableau" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100" onerror="this.src='https://placehold.co/600x400/1e293b/FFF?text=Tableau+Dashboard'">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
-            <div class="absolute bottom-0 left-0 p-6">
-              <span class="text-xs font-bold text-accent-400 uppercase tracking-wider mb-2 block">Data Visualization</span>
-              <h3 class="text-2xl font-bold text-white mb-2">Tableau Dashboard</h3>
-              <p class="text-slate-300 text-sm mb-4 opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 duration-300">
-                Comprehensive performance metrics dashboard focusing on KPIs and trend analysis.
-              </p>
+            <div class="about-social">
+              <a href="https://github.com/umeshrai01" target="_blank" rel="noopener" class="social-link magnetic" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              </a>
+              <a href="https://www.linkedin.com/in/umesh-kumar-rai" target="_blank" rel="noopener" class="social-link magnetic" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </a>
+              <a href="https://www.kaggle.com/umeshkumarrai123" target="_blank" rel="noopener" class="social-link magnetic" aria-label="Kaggle">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.343l6.203-6.272c.165-.165.33-.246.495-.246h3.239c.144 0 .236.06.281.18.046.149.034.238-.036.27l-6.555 6.344 6.836 8.507c.095.104.117.208.075.324z"/></svg>
+              </a>
+              <a href="mailto:ukrai.ukr@gmail.com" class="social-link magnetic" aria-label="Email">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+              </a>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="py-24 bg-slate-50 dark:bg-slate-900/50">
-    <div class="container mx-auto px-6 max-w-4xl">
-      <div class="glass-card p-8 md:p-12 rounded-2xl shadow-xl text-center">
-        <h2 class="text-3xl font-bold mb-6">Let's Work Together</h2>
-        <p class="text-slate-600 dark:text-slate-300 mb-8 max-w-lg mx-auto">
-          Interested in discussing data science, machine learning, or a potential collaboration? I'm always open to new opportunities.
-        </p>
+    <!-- ========== SECTION 3: SKILLS ========== -->
+    <section id="skills" class="section skills-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">02</span>
+          <h2 class="section-title reveal-text">Skills & Expertise</h2>
+          <div class="section-line"></div>
+        </div>
 
-        <form action="mailto:ukrai.ukr@gmail.com" method="POST" enctype="text/plain" class="space-y-4 max-w-md mx-auto text-left">
-          <div>
-            <label for="name" class="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Name</label>
-            <input type="text" name="name" id="name" required class="w-full px-4 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-accent-500 focus:outline-none transition-all">
-          </div>
-          <div>
-            <label for="email" class="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Email</label>
-            <input type="email" name="email" id="email" required class="w-full px-4 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-accent-500 focus:outline-none transition-all">
-          </div>
-          <div>
-            <label for="message" class="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Message</label>
-            <textarea name="message" id="message" rows="4" required class="w-full px-4 py-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-accent-500 focus:outline-none transition-all"></textarea>
-          </div>
-          <button type="submit" class="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-lg hover:opacity-90 transition-opacity">
-            Send Message
-          </button>
-        </form>
+        <div class="skills-orbit-container reveal-element">
+          <div class="skills-categories">
+            <!-- Category: AI/ML -->
+            <div class="skill-category" data-category="aiml">
+              <div class="category-header">
+                <div class="category-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><path d="M12 2a4 4 0 0 1 4 4c0 1.1-.45 2.1-1.17 2.83L12 12l-2.83-3.17A4 4 0 0 1 12 2z"/><path d="M12 12l2.83 3.17A4 4 0 1 1 9.17 15.17L12 12z"/><circle cx="12" cy="12" r="2"/></svg>
+                </div>
+                <h3 class="category-title">AI / Machine Learning</h3>
+              </div>
+              <div class="skill-tags">
+                <span class="skill-tag">Machine Learning</span>
+                <span class="skill-tag">Deep Learning</span>
+                <span class="skill-tag">NLP</span>
+                <span class="skill-tag">Computer Vision</span>
+                <span class="skill-tag">Feature Engineering</span>
+                <span class="skill-tag">Model Deployment</span>
+              </div>
+            </div>
 
-        <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-700 flex justify-center gap-6">
-          <a href="https://github.com/umeshrai01" target="_blank" class="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"><i data-lucide="github"></i></a>
-          <a href="https://www.linkedin.com/in/umesh-kumar-rai" target="_blank" class="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"><i data-lucide="linkedin"></i></a>
-          <a href="mailto:ukrai.ukr@gmail.com" class="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"><i data-lucide="mail"></i></a>
+            <!-- Category: GenAI -->
+            <div class="skill-category" data-category="genai">
+              <div class="category-header">
+                <div class="category-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><path d="M12 3v18M3 12h18M5.636 5.636l12.728 12.728M18.364 5.636L5.636 18.364"/></svg>
+                </div>
+                <h3 class="category-title">GenAI & LLMs</h3>
+              </div>
+              <div class="skill-tags">
+                <span class="skill-tag">LLMs</span>
+                <span class="skill-tag">RAG</span>
+                <span class="skill-tag">Prompt Engineering</span>
+                <span class="skill-tag">LangChain</span>
+                <span class="skill-tag">OpenAI API</span>
+                <span class="skill-tag">Vector Databases</span>
+              </div>
+            </div>
+
+            <!-- Category: Data Science -->
+            <div class="skill-category" data-category="ds">
+              <div class="category-header">
+                <div class="category-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                </div>
+                <h3 class="category-title">Data Science</h3>
+              </div>
+              <div class="skill-tags">
+                <span class="skill-tag">Pandas</span>
+                <span class="skill-tag">NumPy</span>
+                <span class="skill-tag">Scikit-Learn</span>
+                <span class="skill-tag">TensorFlow</span>
+                <span class="skill-tag">EDA</span>
+                <span class="skill-tag">Statistical Analysis</span>
+              </div>
+            </div>
+
+            <!-- Category: Programming -->
+            <div class="skill-category" data-category="prog">
+              <div class="category-header">
+                <div class="category-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                </div>
+                <h3 class="category-title">Programming</h3>
+              </div>
+              <div class="skill-tags">
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">SQL</span>
+                <span class="skill-tag">C++</span>
+                <span class="skill-tag">R</span>
+                <span class="skill-tag">Java</span>
+              </div>
+            </div>
+
+            <!-- Category: Web Dev -->
+            <div class="skill-category" data-category="web">
+              <div class="category-header">
+                <div class="category-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="10" ry="4"/><line x1="12" y1="2" x2="12" y2="22"/></svg>
+                </div>
+                <h3 class="category-title">Web Development</h3>
+              </div>
+              <div class="skill-tags">
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">Node.js</span>
+                <span class="skill-tag">FastAPI</span>
+                <span class="skill-tag">HTML/CSS</span>
+                <span class="skill-tag">REST APIs</span>
+                <span class="skill-tag">Streamlit</span>
+              </div>
+            </div>
+
+            <!-- Category: Tools -->
+            <div class="skill-category" data-category="tools">
+              <div class="category-header">
+                <div class="category-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                </div>
+                <h3 class="category-title">Tools & Platforms</h3>
+              </div>
+              <div class="skill-tags">
+                <span class="skill-tag">Power BI</span>
+                <span class="skill-tag">Tableau</span>
+                <span class="skill-tag">Git</span>
+                <span class="skill-tag">Docker</span>
+                <span class="skill-tag">Jupyter</span>
+                <span class="skill-tag">VS Code</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="py-8 text-center text-slate-500 text-sm">
-    <p>&copy; <span id="year"></span> Umesh Kumar Rai. Built with Tailwind CSS & ❤️.</p>
+    <!-- ========== SECTION 4: PROJECTS ========== -->
+    <section id="projects" class="section projects-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">03</span>
+          <h2 class="section-title reveal-text">Featured Projects</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="projects-filter reveal-element">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="ai">AI/ML</button>
+          <button class="filter-btn" data-filter="web">Web App</button>
+          <button class="filter-btn" data-filter="data">Data Science</button>
+        </div>
+
+        <div class="projects-grid" id="projects-grid">
+          <!-- Project 1: IPL Winning Prediction -->
+          <article class="project-card reveal-element" data-category="ai" id="project-ipl">
+            <div class="project-card-inner">
+              <div class="project-card-bg"></div>
+              <div class="project-number">01</div>
+              <div class="project-content">
+                <div class="project-tags">
+                  <span class="project-tag">Machine Learning</span>
+                  <span class="project-tag">Sports Analytics</span>
+                </div>
+                <h3 class="project-title">IPL Winning Prediction</h3>
+                <p class="project-desc">Predict IPL match outcomes using ensemble ML models with historical match data, team stats, and advanced feature engineering for accurate probability estimation.</p>
+                <div class="project-tech">
+                  <span>Python</span><span>Scikit-Learn</span><span>Pandas</span><span>Streamlit</span>
+                </div>
+                <div class="project-links">
+                  <a href="https://github.com/umeshrai01" target="_blank" rel="noopener" class="project-link magnetic">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <span>Code</span>
+                  </a>
+                  <button class="project-link project-detail-btn magnetic" data-project="ipl">
+                    <span>Details</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 2: Sales Forecasting -->
+          <article class="project-card reveal-element" data-category="data" id="project-sales">
+            <div class="project-card-inner">
+              <div class="project-card-bg"></div>
+              <div class="project-number">02</div>
+              <div class="project-content">
+                <div class="project-tags">
+                  <span class="project-tag">Time Series</span>
+                  <span class="project-tag">Forecasting</span>
+                </div>
+                <h3 class="project-title">Sales Forecasting</h3>
+                <p class="project-desc">End-to-end sales prediction pipeline using time-series analysis, ARIMA, and gradient boosting models for accurate demand forecasting and business insights.</p>
+                <div class="project-tech">
+                  <span>Python</span><span>Prophet</span><span>XGBoost</span><span>Power BI</span>
+                </div>
+                <div class="project-links">
+                  <a href="https://github.com/umeshrai01" target="_blank" rel="noopener" class="project-link magnetic">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <span>Code</span>
+                  </a>
+                  <button class="project-link project-detail-btn magnetic" data-project="sales">
+                    <span>Details</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 3: AI App Builder -->
+          <article class="project-card reveal-element" data-category="web" id="project-appbuilder">
+            <div class="project-card-inner">
+              <div class="project-card-bg"></div>
+              <div class="project-number">03</div>
+              <div class="project-content">
+                <div class="project-tags">
+                  <span class="project-tag">GenAI</span>
+                  <span class="project-tag">Full-Stack</span>
+                </div>
+                <h3 class="project-title">AI App Builder</h3>
+                <p class="project-desc">An AI-powered application builder that uses LLMs and prompt engineering to automatically generate full-stack web applications from natural language descriptions.</p>
+                <div class="project-tech">
+                  <span>React</span><span>Node.js</span><span>OpenAI</span><span>FastAPI</span>
+                </div>
+                <div class="project-links">
+                  <a href="https://github.com/umeshrai01" target="_blank" rel="noopener" class="project-link magnetic">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <span>Code</span>
+                  </a>
+                  <button class="project-link project-detail-btn magnetic" data-project="appbuilder">
+                    <span>Details</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 4: Students Zone -->
+          <article class="project-card reveal-element" data-category="web" id="project-studentszone">
+            <div class="project-card-inner">
+              <div class="project-card-bg"></div>
+              <div class="project-number">04</div>
+              <div class="project-content">
+                <div class="project-tags">
+                  <span class="project-tag">EdTech</span>
+                  <span class="project-tag">Full-Stack</span>
+                </div>
+                <h3 class="project-title">Students Zone</h3>
+                <p class="project-desc">A comprehensive educational platform with course management, AI-powered tutoring, and interactive learning modules designed for modern students.</p>
+                <div class="project-tech">
+                  <span>React</span><span>Node.js</span><span>MongoDB</span><span>AI Integration</span>
+                </div>
+                <div class="project-links">
+                  <a href="https://github.com/umeshrai01" target="_blank" rel="noopener" class="project-link magnetic">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <span>Code</span>
+                  </a>
+                  <button class="project-link project-detail-btn magnetic" data-project="studentszone">
+                    <span>Details</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 5: Sentiment Analysis -->
+          <article class="project-card reveal-element" data-category="ai" id="project-sentiment">
+            <div class="project-card-inner">
+              <div class="project-card-bg"></div>
+              <div class="project-number">05</div>
+              <div class="project-content">
+                <div class="project-tags">
+                  <span class="project-tag">NLP</span>
+                  <span class="project-tag">Deep Learning</span>
+                </div>
+                <h3 class="project-title">Sentiment Analysis Engine</h3>
+                <p class="project-desc">Neural network-based sentiment classification using LSTM and CNN architectures, with tokenization, embeddings, and attention mechanisms for text analysis.</p>
+                <div class="project-tech">
+                  <span>Python</span><span>TensorFlow</span><span>NLP</span><span>Keras</span>
+                </div>
+                <div class="project-links">
+                  <a href="https://www.kaggle.com/code/umeshkumarrai123/sentiment-analysis-with-neural-networks/" target="_blank" rel="noopener" class="project-link magnetic">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.343l6.203-6.272c.165-.165.33-.246.495-.246h3.239c.144 0 .236.06.281.18.046.149.034.238-.036.27l-6.555 6.344 6.836 8.507c.095.104.117.208.075.324z"/></svg>
+                    <span>Kaggle</span>
+                  </a>
+                  <button class="project-link project-detail-btn magnetic" data-project="sentiment">
+                    <span>Details</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 6: House Price Prediction -->
+          <article class="project-card reveal-element" data-category="data" id="project-houseprice">
+            <div class="project-card-inner">
+              <div class="project-card-bg"></div>
+              <div class="project-number">06</div>
+              <div class="project-content">
+                <div class="project-tags">
+                  <span class="project-tag">Regression</span>
+                  <span class="project-tag">Feature Engineering</span>
+                </div>
+                <h3 class="project-title">House Price Prediction</h3>
+                <p class="project-desc">Predicts house sale prices with careful EDA, advanced feature engineering, and stacking of tree-based regressors for improved accuracy on the Kaggle dataset.</p>
+                <div class="project-tech">
+                  <span>Python</span><span>XGBoost</span><span>LightGBM</span><span>Stacking</span>
+                </div>
+                <div class="project-links">
+                  <a href="https://www.kaggle.com/code/umeshkumarrai123/house-price-prediction" target="_blank" rel="noopener" class="project-link magnetic">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.343l6.203-6.272c.165-.165.33-.246.495-.246h3.239c.144 0 .236.06.281.18.046.149.034.238-.036.27l-6.555 6.344 6.836 8.507c.095.104.117.208.075.324z"/></svg>
+                    <span>Kaggle</span>
+                  </a>
+                  <button class="project-link project-detail-btn magnetic" data-project="houseprice">
+                    <span>Details</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECTION 5: EXPERIENCE & EDUCATION ========== -->
+    <section id="experience" class="section experience-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">04</span>
+          <h2 class="section-title reveal-text">Journey</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="timeline" id="timeline">
+          <div class="timeline-line"></div>
+
+          <div class="timeline-item reveal-element" data-side="left">
+            <div class="timeline-dot">
+              <div class="dot-pulse"></div>
+            </div>
+            <div class="timeline-card">
+              <span class="timeline-date">2024 — Present</span>
+              <h3 class="timeline-title">BS in Data Science & Applications</h3>
+              <h4 class="timeline-subtitle">IIT Madras</h4>
+              <p class="timeline-desc">Pursuing a BS degree in Data Science from India's top engineering institute, covering advanced statistics, ML algorithms, and data engineering.</p>
+              <div class="timeline-tags">
+                <span>Data Science</span><span>Statistics</span><span>Machine Learning</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal-element" data-side="right">
+            <div class="timeline-dot">
+              <div class="dot-pulse"></div>
+            </div>
+            <div class="timeline-card">
+              <span class="timeline-date">2022 — Present</span>
+              <h3 class="timeline-title">B.Tech in Computer Science</h3>
+              <h4 class="timeline-subtitle">University Program</h4>
+              <p class="timeline-desc">Studying core CS fundamentals including algorithms, data structures, operating systems, databases, and software engineering principles.</p>
+              <div class="timeline-tags">
+                <span>Computer Science</span><span>Algorithms</span><span>Software Engineering</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal-element" data-side="left">
+            <div class="timeline-dot">
+              <div class="dot-pulse"></div>
+            </div>
+            <div class="timeline-card">
+              <span class="timeline-date">2023 — Present</span>
+              <h3 class="timeline-title">AI/ML Engineer (Self-Driven)</h3>
+              <h4 class="timeline-subtitle">Open Source & Kaggle</h4>
+              <p class="timeline-desc">Building production ML systems, competing on Kaggle, contributing to open-source AI projects, and developing GenAI applications with LLMs and RAG architectures.</p>
+              <div class="timeline-tags">
+                <span>Kaggle</span><span>Open Source</span><span>GenAI</span><span>LLMs</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal-element" data-side="right">
+            <div class="timeline-dot">
+              <div class="dot-pulse"></div>
+            </div>
+            <div class="timeline-card">
+              <span class="timeline-date">2023</span>
+              <h3 class="timeline-title">Full-Stack Web Development</h3>
+              <h4 class="timeline-subtitle">Projects & Freelancing</h4>
+              <p class="timeline-desc">Building full-stack web applications using React, Node.js, FastAPI, and integrating AI capabilities into production-grade web platforms.</p>
+              <div class="timeline-tags">
+                <span>React</span><span>Node.js</span><span>FastAPI</span><span>MongoDB</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECTION 6: ACHIEVEMENTS ========== -->
+    <section id="achievements" class="section achievements-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">05</span>
+          <h2 class="section-title reveal-text">Achievements</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="achievements-grid">
+          <!-- Animated Counters -->
+          <div class="counter-row reveal-element">
+            <div class="counter-card">
+              <div class="counter-icon">🏆</div>
+              <span class="counter-number" data-target="15">0</span>
+              <span class="counter-suffix">+</span>
+              <span class="counter-label">Projects Completed</span>
+            </div>
+            <div class="counter-card">
+              <div class="counter-icon">📜</div>
+              <span class="counter-number" data-target="5">0</span>
+              <span class="counter-suffix">+</span>
+              <span class="counter-label">Certifications</span>
+            </div>
+            <div class="counter-card">
+              <div class="counter-icon">🧠</div>
+              <span class="counter-number" data-target="6">0</span>
+              <span class="counter-suffix">+</span>
+              <span class="counter-label">Kaggle Notebooks</span>
+            </div>
+            <div class="counter-card">
+              <div class="counter-icon">⭐</div>
+              <span class="counter-number" data-target="10">0</span>
+              <span class="counter-suffix">+</span>
+              <span class="counter-label">Technologies</span>
+            </div>
+          </div>
+
+          <!-- Achievement Cards -->
+          <div class="achievement-cards">
+            <div class="achievement-card reveal-element">
+              <div class="achievement-icon-wrap">
+                <span class="achievement-icon">🎓</span>
+              </div>
+              <h3 class="achievement-title">IIT Madras BS Degree</h3>
+              <p class="achievement-desc">Pursuing BS in Data Science & Applications from the prestigious Indian Institute of Technology Madras.</p>
+            </div>
+
+            <div class="achievement-card reveal-element">
+              <div class="achievement-icon-wrap">
+                <span class="achievement-icon">💻</span>
+              </div>
+              <h3 class="achievement-title">B.Tech Computer Science</h3>
+              <p class="achievement-desc">Bachelor of Technology in Computer Science with focus on AI, algorithms, and software systems.</p>
+            </div>
+
+            <div class="achievement-card reveal-element">
+              <div class="achievement-icon-wrap">
+                <span class="achievement-icon">🤖</span>
+              </div>
+              <h3 class="achievement-title">GenAI & LLM Projects</h3>
+              <p class="achievement-desc">Built production-ready RAG chatbots, AI app builders, and LLM-powered systems with real-world applications.</p>
+            </div>
+
+            <div class="achievement-card reveal-element">
+              <div class="achievement-icon-wrap">
+                <span class="achievement-icon">📊</span>
+              </div>
+              <h3 class="achievement-title">Kaggle Competitor</h3>
+              <p class="achievement-desc">Active Kaggle contributor with notebooks on house price prediction, sentiment analysis, and NYC taxi duration.</p>
+            </div>
+
+            <div class="achievement-card reveal-element">
+              <div class="achievement-icon-wrap">
+                <span class="achievement-icon">🏅</span>
+              </div>
+              <h3 class="achievement-title">Data Visualization</h3>
+              <p class="achievement-desc">Created professional Power BI and Tableau dashboards for business intelligence and decision making.</p>
+            </div>
+
+            <div class="achievement-card reveal-element">
+              <div class="achievement-icon-wrap">
+                <span class="achievement-icon">🚀</span>
+              </div>
+              <h3 class="achievement-title">Full-Stack Development</h3>
+              <p class="achievement-desc">End-to-end application development with React, Node.js, FastAPI, and cloud deployment capabilities.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECTION 7: CONTACT ========== -->
+    <section id="contact" class="section contact-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">06</span>
+          <h2 class="section-title reveal-text">Get In Touch</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-info reveal-element">
+            <h3 class="contact-heading">Let's build something <span class="accent-gradient">extraordinary</span></h3>
+            <p class="contact-text">
+              I'm currently open to new opportunities, collaborations, and interesting projects.
+              Whether you have a question or just want to say hi, I'll get back to you!
+            </p>
+
+            <div class="contact-details">
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <div>
+                  <span class="contact-detail-label">Email</span>
+                  <a href="mailto:ukrai.ukr@gmail.com" class="contact-detail-value">ukrai.ukr@gmail.com</a>
+                </div>
+              </div>
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24" height="24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div>
+                  <span class="contact-detail-label">Location</span>
+                  <span class="contact-detail-value">India</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-social">
+              <a href="https://github.com/umeshrai01" target="_blank" rel="noopener" class="contact-social-link magnetic" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              </a>
+              <a href="https://www.linkedin.com/in/umesh-kumar-rai" target="_blank" rel="noopener" class="contact-social-link magnetic" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </a>
+              <a href="https://www.kaggle.com/umeshkumarrai123" target="_blank" rel="noopener" class="contact-social-link magnetic" aria-label="Kaggle">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.343l6.203-6.272c.165-.165.33-.246.495-.246h3.239c.144 0 .236.06.281.18.046.149.034.238-.036.27l-6.555 6.344 6.836 8.507c.095.104.117.208.075.324z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="contact-form-wrapper reveal-element">
+            <form id="contact-form" class="contact-form" novalidate>
+              <div class="form-group">
+                <input type="text" id="form-name" name="name" required autocomplete="name" />
+                <label for="form-name" class="form-label">Your Name</label>
+                <div class="form-line"></div>
+                <span class="form-error" id="name-error"></span>
+              </div>
+
+              <div class="form-group">
+                <input type="email" id="form-email" name="email" required autocomplete="email" />
+                <label for="form-email" class="form-label">Your Email</label>
+                <div class="form-line"></div>
+                <span class="form-error" id="email-error"></span>
+              </div>
+
+              <div class="form-group">
+                <input type="text" id="form-subject" name="subject" required />
+                <label for="form-subject" class="form-label">Subject</label>
+                <div class="form-line"></div>
+                <span class="form-error" id="subject-error"></span>
+              </div>
+
+              <div class="form-group">
+                <textarea id="form-message" name="message" rows="4" required></textarea>
+                <label for="form-message" class="form-label">Your Message</label>
+                <div class="form-line"></div>
+                <span class="form-error" id="message-error"></span>
+              </div>
+
+              <button type="submit" class="btn-submit magnetic" id="btn-submit">
+                <span class="btn-submit-text">Send Message</span>
+                <span class="btn-submit-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </span>
+                <span class="btn-submit-loading" aria-hidden="true">
+                  <span class="spinner"></span>
+                </span>
+                <span class="btn-submit-success" aria-hidden="true">✓ Sent!</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== SECTION 8: FOOTER ========== -->
+  <footer id="footer" class="site-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#hero" class="footer-logo">
+            <span class="footer-logo-text">UKR</span>
+            <span class="footer-logo-dot"></span>
+          </a>
+          <p class="footer-tagline">Building intelligent systems for tomorrow.</p>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4 class="footer-col-title">Navigation</h4>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">More</h4>
+            <a href="#experience">Journey</a>
+            <a href="#achievements">Achievements</a>
+            <a href="#contact">Contact</a>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-col-title">Connect</h4>
+            <a href="https://github.com/umeshrai01" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://www.linkedin.com/in/umesh-kumar-rai" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://www.kaggle.com/umeshkumarrai123" target="_blank" rel="noopener">Kaggle</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">© <span id="footer-year"></span> Umesh Kumar Rai. Crafted with passion.</p>
+        <button id="back-to-top" class="back-to-top magnetic" aria-label="Back to top">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M18 15l-6-6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
   </footer>
 
-  <!-- Modal Template (Hidden) -->
-  <div id="projectModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm opacity-0 transition-opacity duration-300">
-    <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl transform scale-95 transition-transform duration-300 p-6 md:p-8 relative border border-slate-200 dark:border-slate-800">
-      <button id="closeModal" class="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-      <div id="modalBody">
-        <!-- Content injected here -->
+  <!-- ========== PROJECT DETAIL MODAL ========== -->
+  <div id="project-modal" class="project-modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal-container">
+      <div class="modal-content" id="modal-content">
+        <button id="modal-close" class="modal-close" aria-label="Close modal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <div id="modal-body"></div>
       </div>
     </div>
   </div>
 
-  <script>
-    // --- Icons ---
-    lucide.createIcons();
-
-    // --- Dark Mode ---
-    const toggle = document.getElementById('darkModeToggle');
-    const html = document.documentElement;
-    
-    // Check local storage or system preference
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      html.classList.add('dark');
-    } else {
-      html.classList.remove('dark');
-    }
-
-    toggle.addEventListener('click', () => {
-      html.classList.toggle('dark');
-      localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
-    });
-
-    // --- Typewriter Effect ---
-    const phrases = ["Machine Learning Models.", "RAG Chatbots.", "Predictive Analytics.", "Visual Stories."];
-    let i = 0;
-    let j = 0;
-    let isDeleting = false;
-    const speed = 100;
-    const deleteSpeed = 50;
-    const pause = 2000;
-    const target = document.getElementById("typewriter");
-
-    function type() {
-      const current = phrases[i % phrases.length];
-      if (isDeleting) {
-        target.textContent = current.substring(0, j - 1);
-        j--;
-        if (j === 0) {
-          isDeleting = false;
-          i++;
-        }
-      } else {
-        target.textContent = current.substring(0, j + 1);
-        j++;
-        if (j === current.length) {
-          isDeleting = true;
-          setTimeout(type, pause);
-          return;
-        }
-      }
-      setTimeout(type, isDeleting ? deleteSpeed : speed);
-    }
-    document.addEventListener("DOMContentLoaded", type);
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-
-    // --- Project Data & Fetching ---
-    const GITHUB_USER = 'umeshrai01';
-    const projectsGrid = document.getElementById('projectsGrid');
-    
-    // Kaggle Data (Preserved from your original script)
-    const KAGGLE_PROJECTS = [
-      {
-        title: "House Price Prediction",
-        tags: ["Regression", "Ensemble"],
-        desc: "Advanced regression techniques with stacking to predict house prices. Top 5% on Kaggle.",
-        link: "https://www.kaggle.com/code/umeshkumarrai123/house-price-prediction",
-        source: "Kaggle"
-      },
-      {
-        title: "Spaceship Titanic",
-        tags: ["Classification", "Gradient Boosting"],
-        desc: "Predicting which passengers are transported to an alternate dimension using XGBoost.",
-        link: "https://www.kaggle.com/code/umeshkumarrai123/spaceship-titanic-project",
-        source: "Kaggle"
-      },
-      {
-        title: "Sentiment Analysis",
-        tags: ["NLP", "LSTM", "Deep Learning"],
-        desc: "Neural network implementation with tokenization and embeddings for text sentiment.",
-        link: "https://www.kaggle.com/code/umeshkumarrai123/sentiment-analysis-with-neural-networks/",
-        source: "Kaggle"
-      },
-      {
-        title: "MNIST Digit Recognition",
-        tags: ["CV", "CNN", "Keras"],
-        desc: "High-accuracy Convolutional Neural Network for handwritten digit classification.",
-        link: "https://www.kaggle.com/code/umeshkumarrai123/mnist-digit-recognition",
-        source: "Kaggle"
-      },
-      {
-        title: "NYC Taxi Duration",
-        tags: ["Geospatial", "Time Series"],
-        desc: "Feature engineering on geospatial data to predict trip durations in NYC.",
-        link: "https://www.kaggle.com/code/umeshkumarrai123/nyc-taxi-trip-duration",
-        source: "Kaggle"
-      },
-      {
-        title: "Titanic Survival",
-        tags: ["Classification", "EDA"],
-        desc: "The classic Titanic dataset analysis and survival prediction for beginners.",
-        link: "https://www.kaggle.com/code/umeshkumarrai123/titanic-classification-project",
-        source: "Kaggle"
-      }
-    ];
-
-    // Card Component
-    function createCard(p) {
-      // Tags HTML
-      const tagsHtml = p.tags ? p.tags.slice(0,3).map(t => 
-        `<span class="text-xs font-medium px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-md text-slate-600 dark:text-slate-300">${t}</span>`
-      ).join('') : '';
-
-      // Icon determination
-      const icon = p.source === 'Kaggle' 
-        ? '<span class="font-bold text-blue-500">K</span>' 
-        : '<i data-lucide="github" class="w-4 h-4 text-slate-700 dark:text-slate-300"></i>';
-
-      const colorClass = p.source === 'Kaggle' ? 'border-l-4 border-blue-500' : 'border-l-4 border-purple-500';
-
-      return `
-        <article class="glass-card flex flex-col p-6 rounded-xl hover:shadow-2xl hover:shadow-accent-500/10 transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 ${colorClass}">
-          <div class="flex justify-between items-start mb-4">
-            <div class="flex gap-2 flex-wrap">
-              ${tagsHtml}
-            </div>
-            <div class="p-2 bg-slate-50 dark:bg-slate-700 rounded-full shadow-sm">
-              ${icon}
-            </div>
-          </div>
-          
-          <h3 class="text-xl font-bold mb-2 group-hover:text-accent-500 transition-colors">${p.title}</h3>
-          <p class="text-slate-600 dark:text-slate-400 text-sm mb-6 flex-grow leading-relaxed line-clamp-3">
-            ${p.desc || "No description provided."}
-          </p>
-          
-          <div class="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center">
-            <span class="text-xs font-medium text-slate-400 uppercase tracking-wide">${p.source}</span>
-            <a href="${p.link}" target="_blank" class="text-sm font-semibold flex items-center gap-1 text-accent-600 dark:text-accent-400 hover:gap-2 transition-all">
-              View Project <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </a>
-          </div>
-        </article>
-      `;
-    }
-
-    // Render Logic
-    async function loadProjects() {
-      // 1. Render Kaggle immediately
-      KAGGLE_PROJECTS.forEach(p => {
-        projectsGrid.innerHTML += createCard(p);
-      });
-
-      // 2. Fetch GitHub
-      try {
-        const res = await axios.get(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=6&sort=pushed`);
-        const repos = res.data.filter(r => !r.fork).slice(0, 4); // Take top 4 recent
-        
-        repos.forEach(r => {
-          const p = {
-            title: r.name.replace(/-/g, ' ').replace(/_/g, ' '),
-            tags: [r.language || 'Code'],
-            desc: r.description,
-            link: r.html_url,
-            source: 'GitHub'
-          };
-          projectsGrid.innerHTML += createCard(p);
-        });
-        
-        // Refresh icons after injection
-        lucide.createIcons();
-      } catch (err) {
-        console.warn("GitHub fetch error:", err);
-      }
-    }
-
-    loadProjects();
-
-    // --- Modal Logic ---
-    const modal = document.getElementById('projectModal');
-    const modalBody = document.getElementById('modalBody');
-    const closeModal = document.getElementById('closeModal');
-
-    function openModal(content) {
-      modalBody.innerHTML = content;
-      modal.classList.remove('hidden');
-      // Small delay for fade in
-      setTimeout(() => {
-        modal.classList.remove('opacity-0');
-        modal.children[0].classList.remove('scale-95');
-        modal.children[0].classList.add('scale-100');
-      }, 10);
-    }
-
-    closeModal.addEventListener('click', () => {
-      modal.classList.add('opacity-0');
-      modal.children[0].classList.add('scale-95');
-      setTimeout(() => modal.classList.add('hidden'), 300);
-    });
-
-    // Mobile Menu
-    const mobileBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    mobileBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
-
-    // --- Canvas Particle Background (Data Science Network) ---
-    const canvas = document.getElementById('canvas-bg');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let particles = [];
-
-    function initCanvas() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      createParticles();
-    }
-
-    function createParticles() {
-      particles = [];
-      const count = window.innerWidth < 768 ? 40 : 80;
-      for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          size: Math.random() * 2 + 1
-        });
-      }
-    }
-
-    function animateCanvas() {
-      ctx.clearRect(0, 0, width, height);
-      
-      const isDark = document.documentElement.classList.contains('dark');
-      ctx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(15, 23, 42, 0.5)';
-      ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(15, 23, 42, 0.05)';
-
-      for (let i = 0; i < particles.length; i++) {
-        let p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-
-        // Bounce
-        if (p.x < 0 || p.x > width) p.vx *= -1;
-        if (p.y < 0 || p.y > height) p.vy *= -1;
-
-        // Draw dot
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Connect
-        for (let j = i + 1; j < particles.length; j++) {
-          let p2 = particles[j];
-          let dx = p.x - p2.x;
-          let dy = p.y - p2.y;
-          let dist = Math.sqrt(dx*dx + dy*dy);
-          
-          if (dist < 150) {
-            ctx.beginPath();
-            ctx.lineWidth = 1 - dist/150;
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-          }
-        }
-      }
-      requestAnimationFrame(animateCanvas);
-    }
-
-    window.addEventListener('resize', initCanvas);
-    initCanvas();
-    animateCanvas();
-  </script>
+  <!-- ========== SCRIPTS ========== -->
+  <script src="scene.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
